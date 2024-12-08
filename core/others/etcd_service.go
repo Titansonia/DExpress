@@ -9,32 +9,8 @@ import (
 	"go.etcd.io/etcd/clientv3"
 )
 
-func main() {
-	// 创建 etcd 客户端
-	cli, err := clientv3.New(clientv3.Config{
-		Endpoints:   []string{"localhost:2379"}, // etcd 服务地址
-		DialTimeout: 5 * time.Second,
-	})
-	if err != nil {
-		log.Fatalf("failed to connect to etcd: %v", err)
-	}
-	defer cli.Close()
-
-	// 设置键值对并指定过期时间
-	setKeyWithTTL(cli, "mykey", "myvalue", 10)
-
-	// 获取键值对
-	getKey(cli, "mykey")
-
-	// 更新键值对
-	updateKey(cli, "mykey", "newvalue")
-
-	// 删除键值对
-	deleteKey(cli, "mykey")
-}
-
 // 设置键值对并指定过期时间
-func setKeyWithTTL(cli *clientv3.Client, key, value string, ttl int64) {
+func SetKeyWithTTL(cli *clientv3.Client, key, value string, ttl int64) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -54,7 +30,7 @@ func setKeyWithTTL(cli *clientv3.Client, key, value string, ttl int64) {
 }
 
 // 获取键值对
-func getKey(cli *clientv3.Client, key string) {
+func GetKey(cli *clientv3.Client, key string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -69,7 +45,7 @@ func getKey(cli *clientv3.Client, key string) {
 }
 
 // 更新键值对
-func updateKey(cli *clientv3.Client, key, newValue string) {
+func UpdateKey(cli *clientv3.Client, key, newValue string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -82,7 +58,7 @@ func updateKey(cli *clientv3.Client, key, newValue string) {
 }
 
 // 删除键值对
-func deleteKey(cli *clientv3.Client, key string) {
+func DeleteKey(cli *clientv3.Client, key string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
