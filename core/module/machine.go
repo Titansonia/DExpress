@@ -1,6 +1,6 @@
 package module
 
-type Machine struct {
+type Server struct {
 	ID         string
 	IP         string
 	Statistics map[string]string

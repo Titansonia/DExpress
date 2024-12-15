@@ -30,18 +30,23 @@ func SetKeyWithTTL(cli *clientv3.Client, key, value string, ttl int64) {
 }
 
 // 获取键值对
-func GetKey(cli *clientv3.Client, key string) {
+func GetKey(cli *clientv3.Client, key string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	resp, err := cli.Get(ctx, key)
 	if err != nil {
 		log.Fatalf("failed to get key: %v", err)
+		return "", err
 	}
 
 	for _, ev := range resp.Kvs {
 		fmt.Printf("Key: %s, Value: %s\n", ev.Key, ev.Value)
 	}
+	if len(resp.Kvs) == 0 {
+		return "", nil
+	}
+	return string(resp.Kvs[0].Value), nil
 }
 
 // 更新键值对

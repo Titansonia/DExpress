@@ -4,5 +4,4 @@ package module
 type WorkerGroup struct {
 	ID        string
 	WorkerMap map[string]bool //worker id -> isActive
-
 }
